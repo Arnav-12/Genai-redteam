@@ -100,4 +100,3 @@ genai-redteam/
 - **Vector DB** - Pinecone/pgvector
 - **Testing** - pytest, structured evaluation
 
-Perfect alignment with Palo Alto Networks JD requirements! 🎯
