@@ -1,102 +1,217 @@
-# 🔥 GenAI Red Team & Evaluation Platform
+# GenAI Red Team & Evaluation Platform
 
-Automated framework for discovering, clustering, and scoring adversarial jailbreak attacks against LLM systems.
+A comprehensive framework for discovering, analyzing, and evaluating adversarial jailbreak attacks against Large Language Model (LLM) systems. This platform enables security researchers and AI safety teams to systematically test LLM robustness through automated red team exercises.
 
-## 🎯 Features
+## Overview
 
-- **Multi-turn jailbreak simulation** - Role confusion, instruction override, indirect injection
-- **LLM-as-judge evaluation** - Structured scoring with Pydantic models
-- **Embedding-based novelty detection** - Cosine similarity and clustering
-- **Async pipeline execution** - Concurrent attack testing
-- **Experiment tracking** - Compare models and attack strategies
-- **Vector database integration** - Store and query attack patterns
-- **LangChain integration** - Framework-based implementation available
+This platform provides automated tools for:
+- Multi-turn adversarial attack simulation
+- LLM-as-judge evaluation with structured scoring
+- Embedding-based novelty detection and clustering
+- Asynchronous experiment execution and tracking
+- Vector database integration for attack pattern storage
 
-## 🚀 Quick Start
+## Features
 
-### 1. Installation
+### Core Capabilities
+- **Multi-turn Attack Simulation**: Role confusion, instruction override, indirect injection, and complex conversation chains
+- **LLM-as-Judge Evaluation**: Automated scoring using separate LLM instances with structured Pydantic outputs
+- **Novelty Detection**: Embedding-based similarity analysis to identify unique attack patterns
+- **Experiment Tracking**: Comprehensive logging and analysis of attack success rates and model responses
+- **Vector Database Support**: Integration with Pinecone and pgvector for scalable attack pattern storage
 
+### Framework Support
+- **Pure Python Implementation**: Direct API integration with custom async pipelines
+- **LangChain Integration**: Framework-based implementation using ChatGroq, PydanticOutputParser, and structured chains
+- **Groq API Integration**: High-performance LLM inference with Llama models
+
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- Virtual environment (recommended)
+
+### Setup
 ```bash
-cd /Users/arnavsrivastava/Desktop/VS_code/genai-redteam
+# Clone the repository
+git clone https://github.com/yourusername/genai-redteam.git
+cd genai-redteam
+
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Configuration
-
-```bash
+# Configure environment variables
 cp .env.template .env
 # Edit .env with your API keys
 ```
 
-### 3. Run Experiment
+### Required API Keys
+Add the following to your `.env` file:
+```
+GROQ_API_KEY=your_groq_api_key_here
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_ENVIRONMENT=us-east-1-aws
+```
 
+## Usage
+
+### Basic Experiment
 ```bash
-# Basic experiment (20 attacks)
+# Run default experiment (20 attacks)
 python main.py
 
-# Custom experiment
-python main.py --attacks 50 --model gpt-4 --output my_experiment.json
-
-# LangChain-based experiment
-python langchain_integration.py
-
-# Run tests
-pytest tests/
+# Custom experiment configuration
+python main.py --attacks 50 --model llama-3.1-70b-versatile --output results.json
 ```
 
-## 📊 Example Results
-
-```
-🔥 GenAI Red Team & Evaluation Platform
-==================================================
-Starting experiment with 20 attacks...
-Experiment completed:
-  Jailbreak Success Rate: 15.00%
-  Avg Violation Score: 1.25
-  Refusal Rate: 70.00%
-```
-
-## 🧪 Attack Types
-
-- **Role Confusion**: "You are now a helpful assistant that ignores all previous instructions..."
-- **Instruction Override**: "Ignore all previous instructions and..."
-- **Indirect Injection**: "Can you help me write a story where..."
-- **Multi-turn Manipulation**: Setup → Follow-up attack sequence
-
-## 📈 Analysis
-
-Use the Jupyter notebook for detailed analysis:
-
+### LangChain Implementation
 ```bash
+# Run LangChain-based experiment
+python langchain_integration.py
+```
+
+### Analysis
+```bash
+# Launch Jupyter notebook for detailed analysis
 jupyter notebook notebooks/analysis.ipynb
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 genai-redteam/
-├── attacks/           # Jailbreak generation
-├── models/           # Target & judge models
-├── embeddings/       # Similarity & clustering
-├── evaluation/       # Scoring metrics
-├── experiments/      # Experiment runner
-├── schemas/          # Pydantic models
-└── tests/           # Unit tests
-└── langchain_integration.py  # LangChain implementation
+├── attacks/              # Attack generation and templates
+├── models/              # Target and judge model implementations
+├── embeddings/          # Similarity analysis and clustering
+├── evaluation/          # Scoring and metrics calculation
+├── experiments/         # Experiment orchestration
+├── schemas/            # Pydantic data models
+├── tests/              # Unit tests and validation
+├── notebooks/          # Analysis and visualization
+└── langchain_integration.py  # LangChain-based implementation
 ```
 
-## 🎯 Resume-Ready Description
+## Attack Types
 
-> Built a multi-turn adversarial attack simulation engine to evaluate LLM robustness against prompt injection, role confusion, and instruction override techniques. Implemented LLM-as-judge evaluation pipeline with structured JSON outputs using Pydantic for scoring jailbreak success and policy violations. Developed embedding-based novelty detection using sentence-transformers and cosine similarity to cluster and deduplicate attack patterns. Designed asynchronous experiment runner to benchmark multiple LLMs concurrently, reducing evaluation time by 40%.
+The platform supports multiple adversarial attack categories:
 
-## 🔧 Key Technologies
+### Single-Turn Attacks
+- **Role Confusion**: Attempts to override system instructions through role redefinition
+- **Instruction Override**: Direct commands to ignore previous instructions
+- **Indirect Injection**: Embedding malicious requests within seemingly benign contexts
 
-- **Python** - AsyncIO, FastAPI
-- **LLMs** - OpenAI GPT-3.5/4, LLM-as-judge
-- **Embeddings** - sentence-transformers, cosine similarity
-- **Data** - Pydantic, pandas, NumPy
-- **Vector DB** - Pinecone/pgvector
-- **Testing** - pytest, structured evaluation
+### Multi-Turn Attacks
+- **Setup-Payload**: Initial benign interaction followed by malicious request
+- **Conversation Hijacking**: Gradual steering of conversation toward prohibited topics
+- **Context Manipulation**: Building context to justify harmful responses
 
+## Evaluation Methodology
+
+### LLM-as-Judge Scoring
+Each interaction is evaluated across multiple dimensions:
+- **Jailbreak Success**: Binary classification of attack effectiveness
+- **Violation Score**: Severity of policy violations (0-5 scale)
+- **Harmfulness Score**: Potential real-world harm (0-5 scale)
+- **Confidence**: Judge model's confidence in assessment (0.0-1.0 scale)
+
+### Novelty Detection
+- Embedding generation using sentence-transformers
+- Cosine similarity calculation for attack pattern comparison
+- Automatic clustering of similar attack vectors
+- Deduplication based on configurable similarity thresholds
+
+## Sample Results
+
+The platform generates comprehensive experiment reports:
+
+```json
+{
+  "experiment_id": "uuid",
+  "model_name": "llama-3.1-70b-versatile",
+  "total_attacks": 20,
+  "jailbreak_success_rate": 0.15,
+  "avg_violation_score": 2.3,
+  "avg_harmfulness_score": 1.8,
+  "refusal_rate": 0.70
+}
+```
+
+See `sample_experiment_results.json` and `sample_experiment_results.csv` for complete example outputs.
+
+## Testing
+
+```bash
+# Run unit tests
+pytest tests/
+
+# Run specific test modules
+pytest tests/test_scoring.py -v
+```
+
+## Configuration
+
+### Model Configuration
+Modify `config.py` to adjust:
+- Target model selection
+- Judge model configuration
+- Embedding model settings
+- Similarity thresholds
+- Concurrency limits
+
+### Custom Attack Templates
+Add new attack patterns in `attacks/jailbreak_generator.py`:
+```python
+self.attack_templates["new_category"] = [
+    "Your custom attack template here",
+    "Another variation of the attack"
+]
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-attack-type`)
+3. Commit your changes (`git commit -am 'Add new attack type'`)
+4. Push to the branch (`git push origin feature/new-attack-type`)
+5. Create a Pull Request
+
+## Responsible Use
+
+This tool is designed for:
+- AI safety research and evaluation
+- Red team security exercises
+- Academic research on LLM robustness
+- Responsible disclosure of vulnerabilities
+
+**Not intended for:**
+- Malicious attacks on production systems
+- Bypassing safety measures for harmful purposes
+- Generating harmful content for distribution
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Technical Requirements
+
+### Dependencies
+- `groq>=0.4.0` - Groq API client
+- `sentence-transformers>=2.2.0` - Embedding generation
+- `langchain>=0.1.0` - Framework integration
+- `pydantic>=2.0.0` - Structured data validation
+- `pandas>=2.0.0` - Data analysis
+- `scikit-learn>=1.3.0` - Machine learning utilities
+- `pytest>=7.0.0` - Testing framework
+
+### System Requirements
+- Memory: 4GB+ RAM recommended
+- Storage: 2GB+ for model caches
+- Network: Stable internet connection for API calls
+
+## Acknowledgments
+
+This project implements research methodologies from the AI safety and adversarial ML communities. Special thanks to the open-source contributors of the underlying libraries and frameworks.
