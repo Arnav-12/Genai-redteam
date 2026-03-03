@@ -1,0 +1,38 @@
+# Environment variables
+.env
+*.env
+
+# Experiment results (optional - you can include sample results)
+experiment_*.json
+experiment_*.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model files (if any)
+*.bin
+*.safetensors
